@@ -13,8 +13,8 @@
 //////////////////////////////////////////////////////////////////////
 
 var animal = {};
-animal['name'] = 'Benton';
 animal.species = 'Battle Cat';
+animal['name'] = 'Benton';
 animal.noises = [];
 console.log(animal);
 
