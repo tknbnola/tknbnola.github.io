@@ -120,8 +120,12 @@ function updateObject(data, key, value){
 }
 
 function removeProperties(data, array){
+    for(var i = 0; i < array.length; i++){
+        if(data.hasOwnProperty(array[i])){
+            delete data[array[i]];
+        }
+    }
     
-    delete array.indexOf(Object.keys(data));
 }
 
  function dedup(data){

@@ -143,14 +143,14 @@ _.last = function (array, number){
 _.each = function (collection, func){
     if(Array.isArray(collection)){
         for(var i = 0; i < collection.length; i++){
-            func(collection[i], i, collection)
+            func(collection[i], i, collection);
         }
     }else if(typeof collection === 'object'){
         for(var key in collection){
           func(collection[key], key, collection);  
         }
     }
-}
+};
 
 /** _.indexOf()
 * Arguments:
@@ -216,9 +216,13 @@ _.filter = function(array, func){
 *   _.reject([1,2,3,4,5], function(e){return e%2 === 0}) -> [1,3,5]
 */
 _.reject = function(array, func){
-    return _.filter(array, function(element, index, array){
-        return !func(element, index, array);
-    });
+    var newArr = [];  
+   _.each(array, function(element, index, array){
+       if (!func(element, index, array)){
+           newArr.push(element);
+       } 
+   });
+   return newArr;
 
 };
   
@@ -432,7 +436,28 @@ _.some = function(collection, func){
 * Examples:
 *   _.reduce([1,2,3], function(previousSum, currentValue, currentIndex){ return previousSum + currentValue }, 0) -> 6
 */
+/*
+    4. If no SEED was given, use the first element/value of COLLECTION as SEED 
+    1. Call FUNC for every element in COLLECTION passing the arguments (previous result, element, index)!!!!
+    2. On the very first iteration, use <seed> as the "previous result". !!!
+    3. Use RETURN VALUE of FUNC as the PREVIOUS RESULT for the next interation.!!!!
+    5. After last iteration, return the return value of the final FUNC call.!!!
+*/
 
+_.reduce = function(collection, func, seed){
+
+    _.each(collection, function(element, index, collection){
+       if(seed === undefined){
+        seed = element;
+       }
+       else {
+       seed = func(seed, element, index);    
+       }
+       
+    }); 
+    
+    return seed;
+};
 
 /** _.extend()
 * Arguments:
@@ -448,7 +473,15 @@ _.some = function(collection, func){
 *   _.extend(data, {b:"two"}); -> data now equals {a:"one",b:"two"}
 *   _.extend(data, {a:"two"}); -> data now equals {a:"two"}
 */
-
+_.extend = function(data, object, collection){
+    _.each(object, function(value, key, object){
+        data[key] = object[key];
+    });
+    _.each(collection,function(value, key, collection){
+        data[key] = collection[key];
+    });
+    return data;
+};
 
 // This is the proper way to end a javascript library
 }());
